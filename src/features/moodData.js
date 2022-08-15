@@ -9,7 +9,7 @@ export const moodSlice = createSlice({
     },
     reducers: {
         setMood: (state, action) => {
-            //action.state => {Date.toDateString(): moodState}
+            //action.state => {date: Date.toDateString(), mood:moodState}
             state.value.DateStorage[action.payload.date.toDateString()] = action.payload.mood
         },
         unsetMood: (state, action) => {
