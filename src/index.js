@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { configureStore } from "@reduxjs/toolkit";
 import moodReducer from "./features/moodData"
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 const store = configureStore({
   reducer: {
@@ -22,22 +22,14 @@ const store = configureStore({
     }),
 })
 
-const theme = createTheme({
-  palette: {
-    primary:{
-      main: "#5836d3",
-    }
-  },
-});
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
       <App />
-      </ThemeProvider>
     </Provider>
   </React.StrictMode>
 );

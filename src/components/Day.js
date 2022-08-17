@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMood, unsetMood } from "../features/moodData"
 import { DataObjectOutlined } from '@mui/icons-material';
 
-const Day = ({ date }) => {
+const Day = ({ date, firstDay }) => {
   const dispatch = useDispatch();
   const moods = useSelector((state) => state.mood.value);
   const [cellColor, setCellColor] = useState("bg-white");
@@ -17,7 +17,7 @@ const Day = ({ date }) => {
   useEffect(() => {
     switch (moods.DateStorage[date.toDateString()]) {
       case "terrible":
-        setCellColor("bg-purple-900");
+        setCellColor("bg-purple-900 text-white");
         break;
       case "bad":
         setCellColor("bg-purple-500");
@@ -29,12 +29,12 @@ const Day = ({ date }) => {
         setCellColor("bg-green-500");
         break;
       case "great":
-        setCellColor("bg-green-900");
+        setCellColor("bg-green-900 text-white");
         break;
       default:
         setCellColor("bg-white");
     }
-  }, []);
+  });
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -44,9 +44,9 @@ const Day = ({ date }) => {
   };
   return (
     <>
-      <div className={`w-20 h-20 border-black border-solid border-2 flex justify-center items-center ${cellColor}`} onClick={handleClick}>
+      <Box sx={{gridColumn: firstDay}} className={`w-14 h-14 sm:w-20 sm:h-20 border-black border-solid border-2 flex justify-center items-center ${cellColor}`} onClick={handleClick}>
         {date.getDate()}
-      </div>
+      </Box>
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -57,7 +57,7 @@ const Day = ({ date }) => {
         }}
       >
         <MenuItem
-          sx={{ paddingInline: "1rem", display: "flex", flexDirection: "column", width: "5rem" }}
+          sx={{ paddingInline: "0.5rem", display: "flex", flexDirection: "column", width: "5rem" }}
           onClick={() => {
             handleClose();
             dispatch(unsetMood(date));
@@ -67,17 +67,17 @@ const Day = ({ date }) => {
           <em>None</em>
         </MenuItem>
         <MenuItem
-          sx={{ paddingInline: "1rem", display: "flex", flexDirection: "column", width: "5rem" }}
+          sx={{ paddingInline: "0.5rem", display: "flex", flexDirection: "column", width: "5rem" }}
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "terrible" }));
-            setCellColor("bg-purple-900");
+            setCellColor("bg-purple-900 text-white");
           }}>
           <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-purple-900'></div>
           Terrible
         </MenuItem>
         <MenuItem
-          sx={{ paddingInline: "1rem", display: "flex", flexDirection: "column", width: "5rem" }}
+          sx={{ paddingInline: "0.5rem", display: "flex", flexDirection: "column", width: "5rem" }}
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "bad" }));
@@ -87,7 +87,7 @@ const Day = ({ date }) => {
           Bad
         </MenuItem>
         <MenuItem
-          sx={{ paddingInline: "1rem", display: "flex", flexDirection: "column", width: "5rem" }}
+          sx={{ paddingInline: "0.5rem", display: "flex", flexDirection: "column", width: "5rem" }}
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "ok" }));
@@ -97,7 +97,7 @@ const Day = ({ date }) => {
           Ok
         </MenuItem>
         <MenuItem
-          sx={{ paddingInline: "1rem", display: "flex", flexDirection: "column", width: "5rem" }}
+          sx={{ paddingInline: "0.5rem", display: "flex", flexDirection: "column", width: "5rem" }}
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "good" }));
@@ -107,11 +107,11 @@ const Day = ({ date }) => {
           Good
         </MenuItem>
         <MenuItem
-          sx={{ paddingInline: "1rem", display: "flex", flexDirection: "column", width: "5rem" }}
+          sx={{ paddingInline: "0.5rem", display: "flex", flexDirection: "column", width: "5rem" }}
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "great" }));
-            setCellColor("bg-green-900");
+            setCellColor("bg-green-900 text-white");
           }}>
           <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-green-900'></div>
           Great
