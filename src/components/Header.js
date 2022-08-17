@@ -1,11 +1,12 @@
 import React from 'react'
 import Login from './Login'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { supabase } from '../supabaseClient'
 import { Button } from '@mui/material'
-
+import { useDispatch } from 'react-redux'
+import { unsetAll } from '../features/moodData'
 const Header = ({ session, setSession }) => {
-
+    const dispatch = useDispatch();
     useEffect(() => {
         if (session) {
             getProfile()
@@ -24,7 +25,7 @@ const Header = ({ session, setSession }) => {
             <div className="text-xl italicp-4">HWYD</div>
             <div className='flex gap-4 items-center'>
                 {session ? session.user.email : <></>}
-                {session ? <Button variant='contained' onClick={() => { supabase.auth.signOut(); }}>Logout</Button> : <Login />}
+                {session ? <Button variant='contained' onClick={() => { supabase.auth.signOut(); dispatch(unsetAll()); }}>Logout</Button> : <Login />}
             </div>
         </div>
     )
