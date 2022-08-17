@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react'
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMood, unsetMood } from "../features/moodData"
-import { DataObjectOutlined } from '@mui/icons-material';
+import { setMood, unsetMood,setActiveDate } from "../features/moodData";
+import { supabase } from '../supabaseClient';
 
-const Day = ({ date, firstDay }) => {
+const Day = ({ date, firstDay, session }) => {
   const dispatch = useDispatch();
   const moods = useSelector((state) => state.mood.value);
   const [cellColor, setCellColor] = useState("bg-white");
@@ -14,37 +14,53 @@ const Day = ({ date, firstDay }) => {
   const open = Boolean(anchorEl);
 
 
+  const updateTable = async (session) => {
+    if (session) {
+      let { error } = await supabase.from('moods').upsert({ id: session.user.id, moods: moods.DateStorage }, {
+        returning: 'minimal', // Don't return the value after inserting
+      })
+      if (error) {
+        console.error(error)
+      }
+    }
+  }
+
+  useEffect(() => { updateTable(session); }, [moods.DateStorage])
+
   useEffect(() => {
-    switch (moods.DateStorage[date.toDateString()]) {
-      case "terrible":
-        setCellColor("bg-purple-900 text-white");
-        break;
-      case "bad":
-        setCellColor("bg-purple-500");
-        break;
-      case "ok":
-        setCellColor("bg-neutral-300");
-        break;
-      case "good":
-        setCellColor("bg-green-500");
-        break;
-      case "great":
-        setCellColor("bg-green-900 text-white");
-        break;
-      default:
-        setCellColor("bg-white");
+    if (moods.DateStorage[date.toDateString()]) {
+      switch (moods.DateStorage[date.toDateString()].mood) {
+        case "terrible":
+          setCellColor("bg-purple-900 text-white");
+          break;
+        case "bad":
+          setCellColor("bg-purple-500");
+          break;
+        case "ok":
+          setCellColor("bg-neutral-300");
+          break;
+        case "good":
+          setCellColor("bg-green-500");
+          break;
+        case "great":
+          setCellColor("bg-green-900 text-white");
+          break;
+        default:
+          setCellColor("bg-white");
+      }
     }
   });
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    dispatch(setActiveDate(date))
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
   return (
     <>
-      <Box sx={{gridColumn: firstDay}} className={`w-14 h-14 sm:w-20 sm:h-20 border-black border-solid border-2 flex justify-center items-center ${cellColor}`} onClick={handleClick}>
+      <Box sx={{ gridColumn: firstDay }} className={`w-14 h-14 sm:w-20 sm:h-20 md:w-32 md:h-32 border-black border-solid border-2 flex justify-center items-center ${cellColor}`} onClick={handleClick}>
         {date.getDate()}
       </Box>
       <Menu
@@ -112,6 +128,7 @@ const Day = ({ date, firstDay }) => {
             handleClose();
             dispatch(setMood({ date: date, mood: "great" }));
             setCellColor("bg-green-900 text-white");
+
           }}>
           <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-green-900'></div>
           Great

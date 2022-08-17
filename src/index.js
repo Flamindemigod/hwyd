@@ -16,7 +16,7 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore these action types
-        ignoredActions: ['mood/unsetMood', 'mood/setMood'],
+        ignoredActions: ['mood/unsetMood', 'mood/setMood', 'mood/setNote', "mood/setActiveDate"],
         // Ignore these field paths in all actions
       },
     }),

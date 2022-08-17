@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Day from './Day'
 
-const Month = ({ date }) => {
+const Month = ({ date, session }) => {
   let firstDay = (new Date(date.getFullYear(), date.getMonth(), 1)).getDay();
   let daysInMonth = 32 - new Date(date.getFullYear(), date.getMonth(), 32).getDate();
   return (<>
@@ -15,7 +15,7 @@ const Month = ({ date }) => {
       <div className='text-xs sm:text-base font-semibold text-center'>Sat</div>
 
 
-      {Array.from({ length: daysInMonth }, (v, i) => i + 1).map((day) => (<Day firstDay={day === 1 ? firstDay + 1 : null} date={new Date(date.getYear(), date.getMonth(), day)} />))}
+      {Array.from({ length: daysInMonth }, (v, i) => i + 1).map((day) => (<Day key={day} firstDay={day === 1 ? firstDay + 1 : null} date={new Date(date.getFullYear(), date.getMonth(), day)} session={session} />))}
     </div>
   </>
   )
