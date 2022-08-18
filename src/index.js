@@ -18,6 +18,7 @@ const store = configureStore({
         // Ignore these action types
         ignoredActions: ['mood/unsetMood', 'mood/setMood', 'mood/setNote', "mood/setActiveDate"],
         // Ignore these field paths in all actions
+        ignoredPaths:["mood.value.activeDate"]
       },
     }),
 })

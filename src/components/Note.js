@@ -8,10 +8,11 @@ const Note = () => {
     const [note, SetNote] = useState("");
 
     useEffect(()=>{
-        if (data.DateStorage[data.activeDate]){
-            SetNote(data.DateStorage[data.activeDate].note)
+        try{
+
+            SetNote(data.DateStorage[new Date(data.activeDate).getFullYear()][new Date(data.activeDate).getMonth()][new Date(data.activeDate).getDate()].note)
         }
-        else{
+        catch{
             SetNote("")
         }
     }, [data.activeDate])

@@ -9,25 +9,143 @@ export const moodSlice = createSlice({
         }
     },
     reducers: {
-        setActiveDate: (state, action) =>{
+        setActiveDate: (state, action) => {
             state.value.activeDate = action.payload.toDateString();
         },
         setMood: (state, action) => {
             //action.state => {date: Date.toDateString(), mood:moodState}
-            state.value.DateStorage[action.payload.date.toDateString()] = {...state.value.DateStorage[action.payload.date.toDateString()], mood: action.payload.mood}
+            if (state.value.DateStorage[action.payload.date.getFullYear()]) {
+                if (state.value.DateStorage[action.payload.date.getFullYear()][action.payload.date.getMonth()]) {
+                    if (state.value.DateStorage[action.payload.date.getFullYear()][action.payload.date.getMonth()][action.payload.date.getDate()]) {
+                        state.value.DateStorage = {
+                            ...state.value.DateStorage,
+                            [action.payload.date.getFullYear()]: {
+                                ...state.value.DateStorage[action.payload.date.getFullYear()],
+                                [action.payload.date.getMonth()]: {
+                                    ...state.value.DateStorage[action.payload.date.getFullYear()][action.payload.date.getMonth()],
+                                    [action.payload.date.getDate()]: {
+                                        ...state.value.DateStorage[action.payload.date.getFullYear()][action.payload.date.getMonth()][action.payload.date.getDate()],
+                                        mood: action.payload.mood
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        state.value.DateStorage = {
+                            ...state.value.DateStorage,
+                            [action.payload.date.getFullYear()]: {
+                                ...state.value.DateStorage[action.payload.date.getFullYear()],
+                                [action.payload.date.getMonth()]: {
+                                    ...state.value.DateStorage[action.payload.date.getFullYear()][action.payload.date.getMonth()],
+                                    [action.payload.date.getDate()]: {
+                                        mood: action.payload.mood
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    state.value.DateStorage = {
+                        ...state.value.DateStorage,
+                        [action.payload.date.getFullYear()]: {
+                            ...state.value.DateStorage[action.payload.date.getFullYear()],
+                            [action.payload.date.getMonth()]: {
+                                [action.payload.date.getDate()]: {
+                                    mood: action.payload.mood
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                state.value.DateStorage = {
+                    ...state.value.DateStorage,
+                    [action.payload.date.getFullYear()]: {
+                        [action.payload.date.getMonth()]: {
+                            [action.payload.date.getDate()]: {
+                                mood: action.payload.mood
+                            }
+                        }
+                    }
+                }
+            }
         },
         setNote: (state, action) => {
             //action.state => {date: Date.toDateString(), mood:moodState}
-            state.value.DateStorage[action.payload.date.toDateString()] = {...state.value.DateStorage[action.payload.date.toDateString()], note: action.payload.note}
-        
+            if (state.value.DateStorage[action.payload.date.getFullYear()]) {
+                if (state.value.DateStorage[action.payload.date.getFullYear()][action.payload.date.getMonth()]) {
+                    if (state.value.DateStorage[action.payload.date.getFullYear()][action.payload.date.getMonth()][action.payload.date.getDate()]) {
+                        state.value.DateStorage = {
+                            ...state.value.DateStorage,
+                            [action.payload.date.getFullYear()]: {
+                                ...state.value.DateStorage[action.payload.date.getFullYear()],
+                                [action.payload.date.getMonth()]: {
+                                    ...state.value.DateStorage[action.payload.date.getFullYear()][action.payload.date.getMonth()],
+                                    [action.payload.date.getDate()]: {
+                                        ...state.value.DateStorage[action.payload.date.getFullYear()][action.payload.date.getMonth()][action.payload.date.getDate()],
+                                        note: action.payload.note
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        state.value.DateStorage = {
+                            ...state.value.DateStorage,
+                            [action.payload.date.getFullYear()]: {
+                                ...state.value.DateStorage[action.payload.date.getFullYear()],
+                                [action.payload.date.getMonth()]: {
+                                    ...state.value.DateStorage[action.payload.date.getFullYear()][action.payload.date.getMonth()],
+                                    [action.payload.date.getDate()]: {
+                                        note: action.payload.note
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    state.value.DateStorage = {
+                        ...state.value.DateStorage,
+                        [action.payload.date.getFullYear()]: {
+                            ...state.value.DateStorage[action.payload.date.getFullYear()],
+                            [action.payload.date.getMonth()]: {
+                                [action.payload.date.getDate()]: {
+                                    note: action.payload.note
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                state.value.DateStorage = {
+                    ...state.value.DateStorage,
+                    [action.payload.date.getFullYear()]: {
+                        [action.payload.date.getMonth()]: {
+                            [action.payload.date.getDate()]: {
+                                note: action.payload.note
+                            }
+                        }
+                    }
+                }
+            }
+
         },
         unsetMood: (state, action) => {
             //action.payload => Date.toDateString
-            delete state.value.DateStorage[action.payload.toDateString()]
+            try{
+                delete state.value.DateStorage[action.payload.getFullYear()][action.payload.getMonth()][action.payload.getDate()].mood
+            }
+            catch{
+                console.log("failed to unset")
+            }
         },
         unsetAll: (state, action) => {
             //action.payload => None
-            console.log("unsetting all")
             state.value.DateStorage = {}
         },
         getSupabaseData: (state, action) => {
@@ -39,6 +157,6 @@ export const moodSlice = createSlice({
     }
 });
 
-export const { setActiveDate ,setMood, unsetMood,setNote, unsetAll, getSupabaseData } = moodSlice.actions;
+export const { setActiveDate, setMood, unsetMood, setNote, unsetAll, getSupabaseData } = moodSlice.actions;
 
 export default moodSlice.reducer;

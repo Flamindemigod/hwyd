@@ -28,8 +28,8 @@ const Day = ({ date, firstDay, session }) => {
   useEffect(() => { updateTable(session); }, [moods.DateStorage])
 
   useEffect(() => {
-    if (moods.DateStorage[date.toDateString()]) {
-      switch (moods.DateStorage[date.toDateString()].mood) {
+    try{
+      switch (moods.DateStorage[date.getFullYear()][date.getMonth()][date.getDate()].mood){
         case "terrible":
           setCellColor("bg-purple-900 text-white");
           break;
@@ -49,9 +49,10 @@ const Day = ({ date, firstDay, session }) => {
           setCellColor("bg-white");
       }
     }
-    else{
-      setCellColor("bg-white");
+    catch{
+      setCellColor("bg-white")
     }
+    
   }, [moods.DateStorage]);
 
   const handleClick = (event) => {
