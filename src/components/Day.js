@@ -49,7 +49,10 @@ const Day = ({ date, firstDay, session }) => {
           setCellColor("bg-white");
       }
     }
-  });
+    else{
+      setCellColor("bg-white");
+    }
+  }, [moods.DateStorage]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

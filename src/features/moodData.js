@@ -27,6 +27,7 @@ export const moodSlice = createSlice({
         },
         unsetAll: (state, action) => {
             //action.payload => None
+            console.log("unsetting all")
             state.value.DateStorage = {}
         },
         getSupabaseData: (state, action) => {
