@@ -44,7 +44,7 @@ const Calender = ({ session }) => {
       </div>
       </MenuItem>
         <div className="grid grid-cols-3">
-        {months.map((month, index)=>(<MenuItem onClick={()=>{setDate(new Date(date.getFullYear(), index, date.getDate())); handleClose();}}>{month}</MenuItem>))}
+        {months.map((month, index)=>(<MenuItem key={index} onClick={()=>{setDate(new Date(date.getFullYear(), index, date.getDate())); handleClose();}}>{month}</MenuItem>))}
         </div>
       </Menu>
       <Button onClick={() => { setDate(new Date(date.getFullYear(), date.getMonth() + 1, date.getDate())) }}><ArrowForwardIosIcon /></Button>
