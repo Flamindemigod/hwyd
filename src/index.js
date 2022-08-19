@@ -6,7 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { configureStore } from "@reduxjs/toolkit";
 import moodReducer from "./features/moodData"
-
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 const store = configureStore({
   reducer: {
@@ -30,7 +31,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <App />
+      </LocalizationProvider>
     </Provider>
   </React.StrictMode>
 );
