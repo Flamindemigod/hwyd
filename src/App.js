@@ -9,6 +9,7 @@ import { supabase } from "./supabaseClient";
 import { Button } from '@mui/material';
 import {useState, useEffect} from 'react'
 import { getSupabaseData, unsetAll } from './features/moodData';
+import Statistics from './components/Statistics';
 function App() {
   const theme = createTheme({
     palette: {
@@ -62,7 +63,7 @@ function App() {
       <div>How was your day is a react based mood tracking web app made by Flamindemigod</div>
       <div>Sign in with your email or Google to get started.</div>
       <div>Click on the dates to color the cell based on your mood</div>
-
+      <Statistics />
 
 
     </ThemeProvider>
