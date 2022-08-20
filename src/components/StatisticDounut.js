@@ -3,6 +3,22 @@ import React, { useEffect, useState } from 'react';
 
 import { PieChart, Pie, Sector, Cell } from 'recharts';
 
+//https://stackoverflow.com/questions/45309447/calculating-median-javascript
+function median(values) {
+  if (values.length === 0) throw new Error("No inputs");
+
+  values.sort(function (a, b) {
+    return a - b;
+  });
+
+  var half = Math.floor(values.length / 2);
+
+  if (values.length % 2)
+    return values[half];
+
+  return (values[half - 1] + values[half]) / 2.0;
+}
+
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -56,10 +72,13 @@ const StatisticDounut = ({ upperBound = new Date(), lowerBound = new Date() }) =
   const [goodDays, setGoodDays] = useState(0);
   const [greatDays, setGreatDays] = useState(0);
   const [data, setData] = useState([]);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(1);
+  const [width, setWidth] = useState(window.screen.width);
 
+  useEffect(() => {
+    window.addEventListener('resize', (event) => { setWidth(window.screen.width); });
+  }, [])
   const onPieEnter = (_, index) => {
-    console.log(index)
     setActiveIndex(index);
   };
   const counter = (setter) => {
@@ -74,31 +93,27 @@ const StatisticDounut = ({ upperBound = new Date(), lowerBound = new Date() }) =
     setGreatDays(0);
 
     for (const year in moods.DateStorage) {
-      if (year >= lowerBound.getFullYear() && year <= upperBound.getFullYear()) {
-        for (const month in moods.DateStorage[year]) {
-          if (month >= lowerBound.getMonth() && month <= upperBound.getMonth()) {
-            for (const date in moods.DateStorage[year][month]) {
-              if (date >= lowerBound.getDate() && date <= upperBound.getDate()) {
-                switch (moods.DateStorage[year][month][date].mood) {
-                  case "terrible":
-                    counter(setTerribleDays);
-                    break;
-                  case "bad":
-                    counter(setBadDays);
-                    break;
-                  case "ok":
-                    counter(setOkDays);
-                    break;
-                  case "good":
-                    counter(setGoodDays);
-                    break;
-                  case "great":
-                    counter(setGreatDays);
-                    break;
-                  default:
-                    break;
-                }
-              }
+      for (const month in moods.DateStorage[year]) {
+        for (const date in moods.DateStorage[year][month]) {
+          if (new Date(year, month, date) >= lowerBound && new Date(year, month, date) <= upperBound) {
+            switch (moods.DateStorage[year][month][date].mood) {
+              case "terrible":
+                counter(setTerribleDays);
+                break;
+              case "bad":
+                counter(setBadDays);
+                break;
+              case "ok":
+                counter(setOkDays);
+                break;
+              case "good":
+                counter(setGoodDays);
+                break;
+              case "great":
+                counter(setGreatDays);
+                break;
+              default:
+                break;
             }
           }
         }
@@ -118,10 +133,10 @@ const StatisticDounut = ({ upperBound = new Date(), lowerBound = new Date() }) =
     ])
   }, [terribleDays, badDays, okDays, goodDays, greatDays])
 
-  const COLORS = ['#E0932F', '#EB315F', '#5937D4', '#31E0EB', '#53E12C'];
+  const COLORS = ['#EB315F', '#E0932F', '#5937D4', '#31E0EB', '#53E12C'];
   return (
     <div>
-      <PieChart width={400} height={400}>
+      <PieChart width={median([280, width * 0.8, 400])} height={median([280, width * 0.8, 400])}>
         <Pie
           data={data}
           cx="50%"

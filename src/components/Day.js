@@ -31,19 +31,19 @@ const Day = ({ date, firstDay, session }) => {
     try{
       switch (moods.DateStorage[date.getFullYear()][date.getMonth()][date.getDate()].mood){
         case "terrible":
-          setCellColor("bg-purple-900 text-white");
+          setCellColor("bg-fuschia");
           break;
         case "bad":
-          setCellColor("bg-purple-500");
+          setCellColor("bg-orange");
           break;
         case "ok":
-          setCellColor("bg-neutral-300");
+          setCellColor("bg-primary-300");
           break;
         case "good":
-          setCellColor("bg-green-500");
+          setCellColor("bg-cyan");
           break;
         case "great":
-          setCellColor("bg-green-900 text-white");
+          setCellColor("bg-lightgreen");
           break;
         default:
           setCellColor("bg-white");
@@ -53,7 +53,7 @@ const Day = ({ date, firstDay, session }) => {
       setCellColor("bg-white")
     }
     
-  }, [moods.DateStorage]);
+  }, [moods.DateStorage, date]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -81,7 +81,6 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(unsetMood(date));
-            setCellColor("bg-white");
           }}>
           <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-white'></div>
           <em>None</em>
@@ -91,9 +90,8 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "terrible" }));
-            setCellColor("bg-purple-900 text-white");
           }}>
-          <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-purple-900'></div>
+          <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-fuschia'></div>
           Terrible
         </MenuItem>
         <MenuItem
@@ -101,9 +99,8 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "bad" }));
-            setCellColor("bg-purple-500");
           }}>
-          <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-purple-500'></div>
+          <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-orange'></div>
           Bad
         </MenuItem>
         <MenuItem
@@ -111,9 +108,8 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "ok" }));
-            setCellColor("bg-neutral-300");
           }}>
-          <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-neutral-300'></div>
+          <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-primary-300'></div>
           Ok
         </MenuItem>
         <MenuItem
@@ -121,9 +117,8 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "good" }));
-            setCellColor("bg-green-500");
           }}>
-          <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-green-500'></div>
+          <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-cyan'></div>
           Good
         </MenuItem>
         <MenuItem
@@ -131,10 +126,8 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "great" }));
-            setCellColor("bg-green-900 text-white");
-
           }}>
-          <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-green-900'></div>
+          <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-lightgreen'></div>
           Great
         </MenuItem>
       </Menu>
