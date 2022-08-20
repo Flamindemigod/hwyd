@@ -17,6 +17,10 @@ module.exports = {
           800: "#231654",
           900: "#120b2a"
         },
+        orange: '#E0932F',
+        fuschia: '#EB315F',
+        cyan: '#31E0EB',
+        lightgreen: '#53E12C',
       }
     },
   },
