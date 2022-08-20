@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import StatisticDounut from './StatisticDounut'
 import { TextField } from '@mui/material'
 import {  East } from '@mui/icons-material'
+import StatisticLine from './StatisticLine'
 const Statistics = () => {
   const [upperDate, setUpperDate] = useState(new Date())
   const [lowerDate, setLowerDate] = useState(new Date(new Date().getFullYear()-1, new Date().getMonth(), new Date().getDate()+1))
@@ -34,6 +35,7 @@ const Statistics = () => {
         />
       </div>
       <StatisticDounut upperBound={upperDate} lowerBound={lowerDate}></StatisticDounut>
+      <StatisticLine upperBound={upperDate} lowerBound={lowerDate}/>
     </>
   )
 }
