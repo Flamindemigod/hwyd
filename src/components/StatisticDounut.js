@@ -59,7 +59,6 @@ const StatisticDounut = ({ upperBound = new Date(), lowerBound = new Date() }) =
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onPieEnter = (_, index) => {
-    console.log(index)
     setActiveIndex(index);
   };
   const counter = (setter) => {
@@ -74,11 +73,9 @@ const StatisticDounut = ({ upperBound = new Date(), lowerBound = new Date() }) =
     setGreatDays(0);
 
     for (const year in moods.DateStorage) {
-      if (year >= lowerBound.getFullYear() && year <= upperBound.getFullYear()) {
         for (const month in moods.DateStorage[year]) {
-          if (month >= lowerBound.getMonth() && month <= upperBound.getMonth()) {
             for (const date in moods.DateStorage[year][month]) {
-              if (date >= lowerBound.getDate() && date <= upperBound.getDate()) {
+              if (new Date(year, month, date)>= lowerBound && new Date(year, month, date)<= upperBound) {
                 switch (moods.DateStorage[year][month][date].mood) {
                   case "terrible":
                     counter(setTerribleDays);
@@ -102,8 +99,6 @@ const StatisticDounut = ({ upperBound = new Date(), lowerBound = new Date() }) =
             }
           }
         }
-      }
-    }
 
 
   }, [upperBound, lowerBound, moods.DateStorage])
@@ -118,7 +113,7 @@ const StatisticDounut = ({ upperBound = new Date(), lowerBound = new Date() }) =
     ])
   }, [terribleDays, badDays, okDays, goodDays, greatDays])
 
-  const COLORS = ['#E0932F', '#EB315F', '#5937D4', '#31E0EB', '#53E12C'];
+  const COLORS = ['#EB315F','#E0932F', '#5937D4', '#31E0EB', '#53E12C'];
   return (
     <div>
       <PieChart width={400} height={400}>
