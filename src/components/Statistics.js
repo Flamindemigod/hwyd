@@ -3,13 +3,13 @@ import React, { useState } from 'react'
 import StatisticDounut from './StatisticDounut'
 import { TextField } from '@mui/material'
 import {  East } from '@mui/icons-material'
-import StatisticLine from './StatisticLine'
+import StatisticStackedBar from './StatisticStackedBar'
 const Statistics = () => {
   const [upperDate, setUpperDate] = useState(new Date())
   const [lowerDate, setLowerDate] = useState(new Date(new Date().getFullYear()-1, new Date().getMonth(), new Date().getDate()+1))
   return (
     <>
-      <div className='flex gap-4 p-4 items-center'>
+      <div className='flex gap-4 p-4 items-center justify-center'>
         <DatePicker
           disableFuture
           id="lowerDate"
@@ -34,8 +34,17 @@ const Statistics = () => {
           )}
         />
       </div>
-      <StatisticDounut upperBound={upperDate} lowerBound={lowerDate}></StatisticDounut>
-      <StatisticLine upperBound={upperDate} lowerBound={lowerDate}/>
+      <div className='flex items-center justify-center flex-col sm:flex-row'>
+      <div className="flex flex-col items-center justify-center">
+        <StatisticDounut upperBound={upperDate} lowerBound={lowerDate} />
+        <div className="text-sm">Accumalted moods from {lowerDate.toDateString()} to {upperDate.toDateString()}</div>
+      </div>
+      <div className="flex flex-col items-center justify-center">
+        <StatisticStackedBar upperBound={upperDate} lowerBound={lowerDate} />
+        <div className="text-sm">Frequency of moods for each day of the week</div>
+      </div>
+      </div>
+
     </>
   )
 }

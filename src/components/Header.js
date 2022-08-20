@@ -21,7 +21,7 @@ const Header = ({ session, setSession }) => {
 
 
     return (
-        <div className='w-full flex justify-between p-8 bg-primary-200'>
+        <div className='w-full flex justify-between p-8 bg-primary-200 flex-col sm:flex-row'>
             <div className="text-xl italicp-4">HWYD</div>
             <div className='flex gap-4 items-center text-sm sm:text-base'>
                 {session ? session.user.email : <></>}
