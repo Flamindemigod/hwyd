@@ -64,7 +64,7 @@ const Day = ({ date, firstDay, session }) => {
   };
   return (
     <>
-      <Box sx={{ gridColumn: firstDay }} className={`w-14 h-14 sm:w-20 sm:h-20 md:w-32 md:h-32 border-black border-solid border-2 flex justify-center items-center ${cellColor}`} onClick={handleClick}>
+      <Box sx={{ gridColumn: firstDay }} className={`w-10 h-10 sm:w-20 sm:h-20 md:w-32 md:h-32 border-black border-solid border-2 flex justify-center items-center ${cellColor}`} onClick={handleClick}>
         {date.getDate()}
       </Box>
       <Menu
