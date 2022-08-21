@@ -1,7 +1,9 @@
 import { useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
+import React, { useEffect, useState, useCallback } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { useCurrentPng } from "recharts-to-png";
+import FileSaver from "file-saver";
+import { Button } from '@mui/material';
 //https://stackoverflow.com/questions/45309447/calculating-median-javascript
 function median(values){
     if(values.length ===0) throw new Error("No inputs");
@@ -21,6 +23,7 @@ function median(values){
 
 
 const StatisticStackedBar = ({ upperBound = new Date(), lowerBound = new Date() }) => {
+    const [getPng, { ref, isLoading }] = useCurrentPng();
     const moods = useSelector((state) => state.mood.value);
     const [terribleDays, setTerribleDays] = useState({ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 });
     const [badDays, setBadDays] = useState({ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 });
@@ -29,6 +32,18 @@ const StatisticStackedBar = ({ upperBound = new Date(), lowerBound = new Date() 
     const [greatDays, setGreatDays] = useState({ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 });
     const [data, setData] = useState([]);
     const [width, setWidth] = useState(window.screen.width);
+
+
+    const handleDownload = useCallback(async () => {
+        const png = await getPng();
+    
+        // Verify that png is not undefined
+        if (png) {
+          // Download with FileSaver
+          FileSaver.saveAs(png, 'myChart.png');
+        }
+      }, [getPng]);
+
     useEffect(() => {
         window.addEventListener('resize', (event) => { setWidth(window.screen.width); });
       }, [])
@@ -91,12 +106,14 @@ const StatisticStackedBar = ({ upperBound = new Date(), lowerBound = new Date() 
 
 
     return (
+        <div className='relative'>
         <BarChart
+        ref={ref}
         width={median([300, width*0.8, 500])}
         height={median([300, width*0.8, 400])}
         data={data}
         margin={{
-          top: 20,
+          top: 50,
           right: 30,
           left: 20,
           bottom: 5,
@@ -113,6 +130,8 @@ const StatisticStackedBar = ({ upperBound = new Date(), lowerBound = new Date() 
         <Bar dataKey="Good" stackId="a" fill="#31E0EB" />
         <Bar dataKey="Great" stackId="a" fill="#53E12C" />
       </BarChart>
+      <Button sx={{position:"absolute"}} className='top-0 right-0' onClick={handleDownload}>Download Chart</Button>
+      </div>
     )
 }
 

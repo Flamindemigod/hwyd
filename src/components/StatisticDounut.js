@@ -1,6 +1,8 @@
 import { useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect, useState, useCallback } from 'react';
+import { useCurrentPng } from "recharts-to-png";
+import FileSaver from "file-saver";
+import { Button } from '@mui/material';
 import { PieChart, Pie, Sector, Cell } from 'recharts';
 
 //https://stackoverflow.com/questions/45309447/calculating-median-javascript
@@ -66,6 +68,7 @@ const renderActiveShape = (props) => {
 
 const StatisticDounut = ({ upperBound = new Date(), lowerBound = new Date() }) => {
   const moods = useSelector((state) => state.mood.value);
+  const [getPng, { ref, isLoading }] = useCurrentPng();
   const [terribleDays, setTerribleDays] = useState(0);
   const [badDays, setBadDays] = useState(0);
   const [okDays, setOkDays] = useState(0);
@@ -74,6 +77,18 @@ const StatisticDounut = ({ upperBound = new Date(), lowerBound = new Date() }) =
   const [data, setData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(1);
   const [width, setWidth] = useState(window.screen.width);
+
+
+
+  const handleDownload = useCallback(async () => {
+    const png = await getPng();
+
+    // Verify that png is not undefined
+    if (png) {
+      // Download with FileSaver
+      FileSaver.saveAs(png, 'myChart.png');
+    }
+  }, [getPng]);
 
   useEffect(() => {
     window.addEventListener('resize', (event) => { setWidth(window.screen.width); });
@@ -135,8 +150,8 @@ const StatisticDounut = ({ upperBound = new Date(), lowerBound = new Date() }) =
 
   const COLORS = ['#EB315F', '#E0932F', '#5937D4', '#31E0EB', '#53E12C'];
   return (
-    <div>
-      <PieChart width={median([280, width * 0.8, 400])} height={median([280, width * 0.8, 400])}>
+    <div className='relative'>
+      <PieChart width={median([280, width * 0.8, 400])} height={median([280, width * 0.8, 400])} >
         <Pie
           data={data}
           cx="50%"
@@ -154,6 +169,7 @@ const StatisticDounut = ({ upperBound = new Date(), lowerBound = new Date() }) =
           ))}
         </Pie>
       </PieChart>
+      <Button sx={{position:"absolute"}} className='top-0 right-0' onClick={handleDownload}>Download Chart</Button>
     </div>
 
   )
