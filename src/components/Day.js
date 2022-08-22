@@ -25,7 +25,6 @@ const Day = ({ date, firstDay, session }) => {
     }
   }
 
-  useEffect(() => { updateTable(session); }, [moods.DateStorage])
 
   useEffect(() => {
     try{
@@ -81,6 +80,7 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(unsetMood(date));
+            updateTable(session);
           }}>
           <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-white'></div>
           <em>None</em>
@@ -90,6 +90,7 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "terrible" }));
+            updateTable(session);
           }}>
           <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-fuschia'></div>
           Terrible
@@ -99,6 +100,7 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "bad" }));
+            updateTable(session);
           }}>
           <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-orange'></div>
           Bad
@@ -108,6 +110,7 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "ok" }));
+            updateTable(session);
           }}>
           <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-primary-300'></div>
           Ok
@@ -117,6 +120,7 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "good" }));
+            updateTable(session);
           }}>
           <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-cyan'></div>
           Good
@@ -126,6 +130,7 @@ const Day = ({ date, firstDay, session }) => {
           onClick={() => {
             handleClose();
             dispatch(setMood({ date: date, mood: "great" }));
+            updateTable(session);
           }}>
           <div className='rounded-full w-4 h-4 border-solid border-neutral-600 border-2 bg-lightgreen'></div>
           Great
